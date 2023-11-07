@@ -8,6 +8,8 @@ func main() {
 	remainder.print()
 
 	deck.saveToFile("my_deck")
-	loadedDeck := newDeckFromFile("my_")
+	loadedDeck := newDeckFromFile("my_deck")
+
+	loadedDeck.shuffle()
 	loadedDeck.print()
 }

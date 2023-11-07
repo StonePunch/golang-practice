@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
 const separator string = ","
@@ -74,4 +76,15 @@ func (d deck) saveToFile(filename string) error {
 	deckByteSlice := []byte(d.toString())
 
 	return os.WriteFile(filename, deckByteSlice, 0666)
+}
+
+func (d deck) shuffle() {
+	source := rand.NewSource(time.Now().UnixNano())
+	randGen := rand.New(source)
+
+	for i := range d {
+		pos := randGen.Intn(len(d) - 1)
+
+		d[i], d[pos] = d[pos], d[i]
+	}
 }
