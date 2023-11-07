@@ -6,8 +6,6 @@ func main() {
 	hand, remainder := deal(deck, 5)
 	hand.print()
 	remainder.print()
-}
 
-func newCard() string {
-	return "Five of Diamonds"
+	deck.saveToFile("my_deck")
 }
