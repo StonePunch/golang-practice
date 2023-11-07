@@ -3,9 +3,9 @@ package main
 func main() {
 	deck := newDeck()
 
-	hand, remainer := deal(deck, 5)
+	hand, remainder := deal(deck, 5)
 	hand.print()
-	remainer.print()
+	remainder.print()
 }
 
 func newCard() string {
