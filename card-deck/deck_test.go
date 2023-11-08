@@ -63,3 +63,46 @@ func TestSaveToFile(t *testing.T) {
 		os.Remove(filename)
 	})
 }
+
+func TestNewDeckFromFile(t *testing.T) {
+	const filename string = "_deckTesting"
+	d := newDeck()
+	_ = d.saveToFile(filename)
+
+	testCases := []struct {
+		name string
+		test func(d deck)
+	}{
+		{
+			name: "Successful Load",
+			test: func(d deck) {
+				loadedDeck, err := newDeckFromFile(filename)
+				if err != nil {
+					t.Errorf("Expected nil error, but was: %v", err)
+				}
+				if len(loadedDeck) != 52 {
+					t.Errorf("Expected deck length of 52, but was %d", len(loadedDeck))
+				}
+			},
+		},
+		{
+			name: "Unsuccessful Load",
+			test: func(d deck) {
+				_, err := newDeckFromFile("")
+				if err == nil {
+					t.Errorf("Expected error when trying to load non existent file")
+				}
+			},
+		},
+	}
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			testCase.test(d)
+		})
+	}
+
+	// Cleanup file created for testing
+	t.Cleanup(func() {
+		os.Remove(filename)
+	})
+}
