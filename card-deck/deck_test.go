@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"reflect"
 	"testing"
 )
 
@@ -143,5 +144,17 @@ func TestDeal(t *testing.T) {
 		t.Run(testCase.name, func(t *testing.T) {
 			testCase.test(d)
 		})
+	}
+}
+
+func TestShuffle(t *testing.T) {
+	var originalDeck, shuffledDeck deck
+	originalDeck = newDeck()
+	shuffledDeck = append(shuffledDeck, originalDeck...)
+
+	shuffledDeck.shuffle()
+
+	if reflect.DeepEqual(originalDeck, shuffledDeck) {
+		t.Errorf("Expected the original deck to be different from the shuffled deck")
 	}
 }
