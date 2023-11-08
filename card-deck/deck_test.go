@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"testing"
 )
 
@@ -41,4 +42,24 @@ func TestNewDeck(t *testing.T) {
 			testCase.test(d)
 		})
 	}
+}
+
+func TestSaveToFile(t *testing.T) {
+	const filename string = "_deckTesting"
+	deck := newDeck()
+
+	err := deck.saveToFile(filename)
+	if err != nil {
+		t.Errorf("Expected deck to be saved, error: %v", err)
+	}
+
+	file, err := os.Open(filename)
+	if err != nil || file == nil {
+		t.Errorf("Expected file named '%s' to exists, error: %v", filename, err)
+	}
+
+	// Cleanup file created for testing
+	t.Cleanup(func() {
+		os.Remove(filename)
+	})
 }
