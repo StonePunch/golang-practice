@@ -58,8 +58,12 @@ func newDeckFromFile(filename string) (deck, error) {
 	return strings.Split(deckString, separator), nil
 }
 
-func deal(deck deck, handSize int) (hand, remainder deck) {
-	return deck[:handSize], deck[handSize:]
+func deal(d deck, handSize int) (hand, remainder deck) {
+	if handSize > len(d) {
+		return d, deck{}
+	}
+
+	return d[:handSize], d[handSize:]
 }
 
 func (d deck) print() {
