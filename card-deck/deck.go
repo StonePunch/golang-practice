@@ -46,16 +46,16 @@ func newDeck() deck {
 	return deck
 }
 
-func newDeckFromFile(filename string) deck {
+func newDeckFromFile(filename string) (deck, error) {
 	deckByteSlice, err := os.ReadFile(filename)
 	if err != nil {
 		fmt.Println("Error:", err)
-		os.Exit(1)
+		return deck{}, err
 	}
 
 	deckString := string(deckByteSlice)
 
-	return strings.Split(deckString, separator)
+	return strings.Split(deckString, separator), nil
 }
 
 func deal(deck deck, handSize int) (hand, remainder deck) {
