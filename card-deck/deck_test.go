@@ -106,3 +106,42 @@ func TestNewDeckFromFile(t *testing.T) {
 		os.Remove(filename)
 	})
 }
+
+func TestDeal(t *testing.T) {
+	d := newDeck()
+
+	testCases := []struct {
+		name string
+		test func(d deck)
+	}{
+		{
+			name: "Deal with valid handSize",
+			test: func(d deck) {
+				hand, remainder := deal(d, 5)
+				if len(hand) != 5 {
+					t.Errorf("Expected hand with 5 cards, but was %d", len(hand))
+				}
+				if len(remainder) != 47 {
+					t.Errorf("Expected 47 remaining cards, but was %d", len(remainder))
+				}
+			},
+		},
+		{
+			name: "Deal with invalid handSize",
+			test: func(d deck) {
+				hand, remainder := deal(d, 55)
+				if len(hand) != 52 {
+					t.Errorf("Expected hand with 52 cards, but was %d", len(hand))
+				}
+				if len(remainder) != 0 {
+					t.Errorf("Expected 0 remaining cards, but was %d", len(remainder))
+				}
+			},
+		},
+	}
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			testCase.test(d)
+		})
+	}
+}

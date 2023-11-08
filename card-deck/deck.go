@@ -58,6 +58,12 @@ func newDeckFromFile(filename string) (deck, error) {
 	return strings.Split(deckString, separator), nil
 }
 
+// Deal func will return a deck with the first x cards from the inputted
+// deck corresponding to the handSize. A deck with the leftover cards
+// will also be returned.
+//
+// If the handSize is larger that the length of the deck, the full deck
+// will be returned along with an empty deck as the remainder
 func deal(d deck, handSize int) (hand, remainder deck) {
 	if handSize > len(d) {
 		return d, deck{}
