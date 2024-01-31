@@ -16,7 +16,7 @@ func main() {
 	ctx := context.Background()
 	dartNumber := 5
 
-	fmt.Println("Methods: ")
+	fmt.Println("Methods: \n-Synchronous=1")
 	fmt.Printf("Select option: ")
 	var selection string
 	fmt.Scanln(&selection)
@@ -36,6 +36,12 @@ func main() {
 	var err error
 
 	switch selection {
+	case "1":
+		scores, err = app.generateScoreSynchronous(ctx, dartNumber)
+		if err != nil {
+			fmt.Println("Error:", err.Error())
+			return
+		}
 
 	default:
 		fmt.Println("Error: Unrecognized code")
