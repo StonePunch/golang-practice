@@ -16,7 +16,7 @@ func main() {
 	ctx := context.Background()
 	dartNumber := 5
 
-	fmt.Println("Methods: \n-Synchronous=1\n-Concurrent=2")
+	fmt.Println("Methods: \n-Synchronous=1\n-Concurrent=2\n-WorkerPool=3")
 	fmt.Printf("Select option: ")
 	var selection string
 	fmt.Scanln(&selection)
@@ -45,6 +45,13 @@ func main() {
 
 	case "2":
 		scores, err = app.generateScoreConcurrent(ctx, dartNumber)
+		if err != nil {
+			fmt.Println("Error:", err.Error())
+			return
+		}
+
+	case "3":
+		scores, err = app.generateScoreWorkerPool(ctx, dartNumber)
 		if err != nil {
 			fmt.Println("Error:", err.Error())
 			return
