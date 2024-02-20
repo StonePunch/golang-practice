@@ -17,13 +17,15 @@ func main() {
 	var start time.Time
 	var slice []int
 
-	// execution time using base code: 63ms
 	start = time.Now()
 	slice = getSliceBase(totalWork)
 	fmt.Printf("getSliceBase execution time: %s | Length of slice: %d\n", time.Since(start), len(slice))
 
-	// execution time using workers code: 25ms
 	start = time.Now()
 	slice = getSliceWorker(totalWork)
 	fmt.Printf("getSliceWorker execution time: %s | Length of slice: %d\n", time.Since(start), len(slice))
+
+	start = time.Now()
+	slice = getSliceSimple(totalWork)
+	fmt.Printf("getSliceSimple execution time: %s | Length of slice: %d\n", time.Since(start), len(slice))
 }
