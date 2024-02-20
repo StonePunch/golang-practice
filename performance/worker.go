@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -23,12 +22,12 @@ func getSliceWorker(totalWork int) []int {
 
 	// Start up workers
 	var wgWorkers sync.WaitGroup
-	for i := 1; i <= workerNum; i++ {
+	for i := 0; i < workerNum; i++ {
 		wgWorkers.Add(1)
-		go func(id int) {
+		go func() {
 			defer wgWorkers.Done()
-			worker(id, jobs, out)
-		}(i)
+			worker(jobs, out)
+		}()
 	}
 
 	// Add work to be done
@@ -60,23 +59,11 @@ func getSliceWorker(totalWork int) []int {
 	return data
 }
 
-func worker(id int, jobs <-chan job, out chan<- []int) {
-	fmt.Println("worker", id, "started")
-
+func worker(jobs <-chan job, out chan<- []int) {
 	for job := range jobs {
-		fmt.Println("worker", id, "started job")
-
 		result := job.work(job.offsetNum, job.workSubset)
 		out <- result
-
-		fmt.Printf("worker %d ended job, values between %d and %d\n",
-			id,
-			result[0],
-			result[len(result)-1],
-		)
 	}
-
-	fmt.Println("worker", id, "stopped")
 }
 
 func addToSlice(offsetNum, workSubset int) []int {
