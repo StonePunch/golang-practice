@@ -4,10 +4,7 @@ import (
 	"sync"
 )
 
-const (
-	workerNum  = 10
-	jobDivider = 20
-)
+const workerNum = 10
 
 // Job represents a single to job be done by a worker
 type job struct {
@@ -17,31 +14,24 @@ type job struct {
 }
 
 func getSliceWorker(totalWork int) []int {
-	out := make(chan []int, jobDivider)
-	jobs := make(chan job, jobDivider)
+	out := make(chan []int, workerNum)
 
 	// Start up workers
 	var wgWorkers sync.WaitGroup
 	for i := 0; i < workerNum; i++ {
 		wgWorkers.Add(1)
-		go func() {
+		go func(offsetNum int) {
 			defer wgWorkers.Done()
-			worker(jobs, out)
-		}()
-	}
 
-	// Add work to be done
-	go func() {
-		for i := 0; i < jobDivider; i++ {
-			jobs <- job{
-				offsetNum:  i,
-				workSubset: totalWork / jobDivider,
+			j := job{
+				offsetNum:  offsetNum,
+				workSubset: totalWork / workerNum,
 				work:       addToSlice,
 			}
-		}
 
-		close(jobs)
-	}()
+			worker(j, out)
+		}(i)
+	}
 
 	// Close the out channel when all workers stop
 	go func() {
@@ -59,11 +49,9 @@ func getSliceWorker(totalWork int) []int {
 	return data
 }
 
-func worker(jobs <-chan job, out chan<- []int) {
-	for job := range jobs {
-		result := job.work(job.offsetNum, job.workSubset)
-		out <- result
-	}
+func worker(j job, out chan<- []int) {
+	result := j.work(j.offsetNum, j.workSubset)
+	out <- result
 }
 
 func addToSlice(offsetNum, workSubset int) []int {
