@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
 // Assumptions:
@@ -13,11 +14,16 @@ const totalWork = 10000000
 
 // Run benchmark with: go test -bench=. -benchtime=5s
 func main() {
+	var start time.Time
+	var slice []int
+
 	// execution time using base code: 63ms
-	slice, executionTime := getSliceBase(totalWork)
-	fmt.Printf("%s | Length of slice: %d\n", executionTime, len(slice))
+	start = time.Now()
+	slice = getSliceBase(totalWork)
+	fmt.Printf("getSliceBase execution time: %s | Length of slice: %d\n", time.Since(start), len(slice))
 
 	// execution time using workers code: 25ms
-	slice, executionTime = getSliceWorker(totalWork)
-	fmt.Printf("%s | Length of slice: %d\n", executionTime, len(slice))
+	start = time.Now()
+	slice = getSliceWorker(totalWork)
+	fmt.Printf("etSliceWorker execution time: %s | Length of slice: %d\n", time.Since(start), len(slice))
 }

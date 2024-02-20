@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"sync"
-	"time"
 )
 
 const (
@@ -18,9 +17,7 @@ type job struct {
 	work       func(offsetNum, workSubset int) []int
 }
 
-func getSliceWorker(totalWork int) ([]int, string) {
-	start := time.Now()
-
+func getSliceWorker(totalWork int) []int {
 	out := make(chan []int, jobDivider)
 	jobs := make(chan job, jobDivider)
 
@@ -60,7 +57,7 @@ func getSliceWorker(totalWork int) ([]int, string) {
 		data = append(data, v...)
 	}
 
-	return data, fmt.Sprint("The getSliceWorker execution time was: ", time.Since(start))
+	return data
 }
 
 func worker(id int, jobs <-chan job, out chan<- []int) {
