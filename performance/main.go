@@ -25,5 +25,5 @@ func main() {
 	// execution time using workers code: 25ms
 	start = time.Now()
 	slice = getSliceWorker(totalWork)
-	fmt.Printf("etSliceWorker execution time: %s | Length of slice: %d\n", time.Since(start), len(slice))
+	fmt.Printf("getSliceWorker execution time: %s | Length of slice: %d\n", time.Since(start), len(slice))
 }
